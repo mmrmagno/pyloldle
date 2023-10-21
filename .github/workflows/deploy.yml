@@ -4,14 +4,13 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
+    - name: Checkout repository
       uses: actions/checkout@v3
 
     - name: Set up Python
@@ -20,18 +19,13 @@ jobs:
         python-version: 3.11.6
 
     - name: Install dependencies
-      run: |
-        pip install Flask==2.0.2 Frozen-Flask Werkzeug==2.0.1
+      run: pip install Flask==2.0.2 Frozen-Flask Werkzeug==2.0.1
 
-    - name: Build static files
-      run: |
-        python freeze.py
+    - name: Generate static files
+      run: python freeze.py
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./build
-
-
-
